@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import iise from './Services/App.js'
+import iise from './Services/App'
+import requests from './Services/Requests'
 const iiseService = new iise();
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {date: new Date()};
+    this.state = {
+      date: new Date(),
+      count: 0,
+      clanName: 'GG EZ'
+    };
+    this.count = 0;
+    this.handleChangeClanName=this.handleChangeClanName.bind(this);
+    this.handleSubmit=this.handleSubmit.bind(this);
   }
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
       1000
     );
-
-    iiseService.getConferences().then((response) => {
-       this.conferenceList = response.map((conference) => 
-        <li> {JSON.stringify(conference.name)} </li>
-      );
-    });
-
   }
   componentWillUnmount() {
     clearInterval(this.timerID);
@@ -28,6 +29,23 @@ class App extends Component {
   tick() {
     this.setState({
       date: new Date()
+    });
+  }
+  handleChangeClanName(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+  handleSubmit(event){
+    event.preventDefault();
+    const filters = {
+      'name':this.state.clanName
+    };
+    iiseService.searchClan(filters).then(json => {
+      console.log(json);
+      this.setState = {
+        clanList: <p>obtained:{json}</p>
+      }
     });
   }
   render() {
@@ -42,7 +60,19 @@ class App extends Component {
         </p>
         <p>By the way, the time is: <code>{this.state.date.toLocaleTimeString()}</code></p>
         <p>conferences:</p>
-        {this.conferenceList}
+
+        <form name="clanSearch" onSubmit={this.handleSubmit}>
+          <input 
+            name="clanName"
+            value={this.state.clanName} 
+            onChange={this.handleChangeClanName}/>
+          <button 
+            type="submit">
+            Search
+          </button>
+          <h1>{this.state.clanName}</h1>
+          {this.state.clanList}
+        </form>
       </div>
     );
   }

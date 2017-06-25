@@ -6,6 +6,9 @@
 # testing
 /coverage
 
+# private
+/private
+
 # production
 /build
 
