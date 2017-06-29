@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FormGroup, Radio, Button, ControlLabel, FormControl} from 'react-bootstrap';
+import {FormGroup, Button, ControlLabel, FormControl} from 'react-bootstrap';
 
 
 class Home extends Component{
@@ -18,10 +18,9 @@ class Home extends Component{
 		const level = this.state.thlevel || 1;
 		const thLevels = [1,2,3,4,5,6,7,8,9,10,11].map((value)=>{
 			return (
-				<Radio key={value} name="thlevel" value={value} inline checked={this.state.thlevel==value?"checked":""}>
-					<p>Level {value}</p>
-					<img src={`${thImage}/Town_Hall${value}.png`} alt={level}/>
-				</Radio><br></br>
+				<option key={value} name="thlevel" value={value}>
+					Nivel {value}
+				</option>
 			)
 		});
 		return (
@@ -40,7 +39,15 @@ class Home extends Component{
 					<FormGroup onChange={this.handleInputChange}>
 						<ControlLabel>TownHall Level</ControlLabel>
 						<img src={`${thImage}/Town_Hall${level}.png`} alt=""/>
-						<div>{thLevels}</div>
+						<div>
+							<FormControl name="thlevel"
+								onChange={this.handleInputChange}
+								value={this.state.thlevel}
+								componentClass="select"
+								placeholder="Nivel">
+								{thLevels}
+							</FormControl>
+						</div>
 					</FormGroup>
 					<Button type="submit" bsStyle="primary">Update Data</Button>
 				</form>
@@ -55,6 +62,7 @@ class Home extends Component{
 	}
 	handleInputChange(event){
 		console.log(event.target.value);
+		console.log(event.target.name);
 		this.setState({
 			[event.target.name]:event.target.value
 		});
