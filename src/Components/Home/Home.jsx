@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import {FormGroup, Radio, Button, ControlLabel, FormControl} from 'react-bootstrap';
-import th1 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall1.png'
-import th2 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall2.png'
-import th3 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall3.png'
-import th4 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall4.png'
-import th5 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall5.png'
-import th6 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall6.png'
-import th7 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall7.png'
-import th8 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall8.png'
-import th9 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall9.png'
-import th10 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall10.png'
-import th11 from '../../../assets/Buildings/Resource_Buildings/Town_Hall/Town_Hall11.png'
+
 
 class Home extends Component{
 	constructor(props) {
@@ -24,14 +14,16 @@ class Home extends Component{
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 	render() {
+		const thImage = '/assets/Buildings/Resource_Buildings/Town_Hall';
+		const level = this.state.thlevel || 1;
 		const thLevels = [1,2,3,4,5,6,7,8,9,10,11].map((value)=>{
 			return (
 				<Radio key={value} name="thlevel" value={value} inline checked={this.state.thlevel==value?"checked":""}>
-					{value}
-				</Radio>
+					<p>Level {value}</p>
+					<img src={`${thImage}/Town_Hall${value}.png`} alt={level}/>
+				</Radio><br></br>
 			)
 		});
-		const thImage = [th1,th2,th3,th4,th5,th6,th7,th8,th9,th10,th11];
 		return (
 			<div>
 				<h1>{this.state.username}</h1>
@@ -47,10 +39,10 @@ class Home extends Component{
 					</FormGroup>
 					<FormGroup onChange={this.handleInputChange}>
 						<ControlLabel>TownHall Level</ControlLabel>
-						<img src={thImage[this.state.thlevel-1]} alt=""/>
+						<img src={`${thImage}/Town_Hall${level}.png`} alt=""/>
 						<div>{thLevels}</div>
 					</FormGroup>
-					<Button type="submit">Update Data</Button>
+					<Button type="submit" bsStyle="primary">Update Data</Button>
 				</form>
 			</div>
 		);
