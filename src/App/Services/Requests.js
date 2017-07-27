@@ -1,51 +1,74 @@
 import 'whatwg-fetch'
 
 export default class requests{
-    constructor(baseUrl, proxyUrl='', headers={}){
-        this.headers = headers
-        this.proxyUrl = proxyUrl;
+    /**
+     * 
+     * @param {string} baseUrl - the base url this class will always send requests
+     * @param {object} baseHeader - header that will always be
+     *  sent in additional to new headers per request
+     */
+    constructor(baseUrl, baseHeaeder={}){
+        this.header = baseHeaeder;
         this.baseUrl = baseUrl;
+        if(typeof baseUrl === 'string')
+            throw new TypeError('expected baseUrl to be string')
+        if(typeof header === 'object')
+            throw new TypeError('expected header to be object')
     }
     /**
      * see whatwg-fetch documentation
      * 
-     * fetch(url, options);
+     * fetch(url, header);
      * 
-     * @param {string} url 
-     * @param {object} options 
-     * @returns {Promise} return fetch(url, options)
+     * @param {object} header 
+     * @returns {Promise} return fetch(this.baseUrl, header)
      */
-    fetch(url, options){
-        return fetch(url, options);
+    fetch(header){
+        Object.assign(header, this.header)
+        return fetch(url, header);
     }
     /**
      * GET HTTP method -> Example:
      * 
      * requests.get('myapi.com/v1/students', {Authorization: 'Basic user:password'})
-     * @param {string} url - url string to GET
-     * @param {object} headers - an object of the headers key, value, defaults as empty object
-     * @return {promise} returns error only if network failure. see: whatwg-fetch 
+     * @param {string} url - url string to GET, base url not included
+     * @param {object} header - an object of the header key, value, defaults as empty object
+     * @return {promise} returns error only if network fails. see: whatwg-fetch 
      */
-    get(url, headers={}){
-        url = this.proxyUrl + this.baseUrl + url;
-        console.log(Object.assign(headers, this.headers))
+    get(url, header={}){
+        url = this.baseUrl + url;
         return fetch(url, {
-            headers: Object.assign(headers, this.headers),
+            header: Object.assign(header, this.header),
             method: 'GET'
+        });
+    }
+    /**
+     * DELETE HTTP method -> Example:
+     * 
+     * requests.delete('myapi.com/v1/students', {Authorization: 'Basic user:password'})
+     * @param {string} url - url string to DELETE, base url not included
+     * @param {object} header - an object of the header key, value, defaults as empty object
+     * @return {promise} returns error only if network fails. see: whatwg-fetch 
+     */
+    delete(url, header={}){
+        url = this.baseUrl + url;
+        return fetch(url, {
+            header: Object.assign(header, this.header),
+            method: 'DELETE'
         });
     }
     /**
      * POST HTTP method -> Example:
      * 
      * requests.get('myapi.com/v1/students', {Authorization: 'Basic user:password'})
-     * @param {string} url - url string to GET
+     * @param {string} url - url string to POST, base url not included
      * @param {object} payload - an object that will be send in the body as json
-     * @param {object} header - an object of the headers key, value, defaults as empty object
-     * @returns {promise} returns error only if network failure or invalid payload. see: whatwg-fetch 
+     * @param {object} header - an object of the header key, value, defaults as empty object
+     * @returns {promise} returns error only if network fails or invalid payload. see: whatwg-fetch 
      */
-    post(url, payload, headers={}){
-        url = this.proxyUrl + this.baseUrl + url;
-        headers['Content-Type'] = 'appliaction/json';
+    post(url, payload, header={}){
+        url = this.baseUrl + url;
+        header['Content-Type'] = 'appliaction/json';
         let jsonString;
        
         try {
@@ -56,7 +79,7 @@ export default class requests{
             });
         }
         return fetch(url, {
-            headers: Object.assign(headers, this.headers),
+            header: Object.assign(header, this.header),
             method: 'POST',
             body: jsonString
         });
@@ -65,14 +88,14 @@ export default class requests{
      * PUT HTTP method -> Example:
      * 
      * requests.get('myapi.com/v1/students', {Authorization: 'Basic user:password'})
-     * @param {string} url - url string to GET
+     * @param {string} url - url string to PUT, base url not included
      * @param {object} payload - an object that will be send in the body as json
-     * @param {object} header - an object of the headers key, value, defaults as empty object
-     * @returns {promise} returns error only if network failure or invalid payload. see: whatwg-fetch 
+     * @param {object} header - an object of the header key, value, defaults as empty object
+     * @returns {promise} returns error only if network fails or invalid payload. see: whatwg-fetch 
      */
-    put(url, payload, headers={}){
-        url = this.proxyUrl + this.baseUrl + url;
-        headers['Content-Type'] = 'appliaction/json';
+    put(url, payload, header={}){
+        url = this.baseUrl + url;
+        header['Content-Type'] = 'appliaction/json';
         let jsonString;
         
         try {
@@ -83,7 +106,7 @@ export default class requests{
             });
         }
         return fetch(url, {
-            headers: Object.assign(headers, this.headers),
+            header: Object.assign(header, this.header),
             method: 'PUT',
             body: jsonString
         });

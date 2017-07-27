@@ -42,7 +42,6 @@ class App extends Component {
       'name':this.state.clanName
     };
     iiseService.searchClan(filters).then(json => {
-      console.log(json);
       this.setState = {
         clanList: <p>obtained:{json}</p>
       }
