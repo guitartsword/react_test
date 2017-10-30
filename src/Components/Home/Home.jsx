@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import {FormGroup, Button, ControlLabel, FormControl} from 'react-bootstrap';
-
+import requests from 'Services/Requests'
+const clash = new requests('http://138.68.228.152/');
 
 class Home extends Component{
 	constructor(props) {
 		super(props);
 		this.state = ({
-			username: localStorage.getItem('username'),
-			thlevel: localStorage.getItem('thlevel')
+			username: localStorage.getItem('username') || '',
+			thlevel: localStorage.getItem('thlevel') || 1,
+			tag: '',
+			player_data: {}
 		});
 		
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -15,54 +18,47 @@ class Home extends Component{
 	}
 	render() {
 		const thImage = '/assets/Buildings/Resource_Buildings/Town_Hall';
-		const level = this.state.thlevel || 1;
-		const thLevels = [1,2,3,4,5,6,7,8,9,10,11].map((value)=>{
-			return (
-				<option key={value} name="thlevel" value={value}>
-					Nivel {value}
-				</option>
-			)
-		});
+		const level = this.state.player_data.townHallLevel || 1;
+		const playerName = this.state.player_data.name || ""
 		return (
 			<div>
-				<h1>{this.state.username}</h1>
+				<h1>{playerName}</h1>
 				<form onSubmit={this.handleSubmit}>
-					<FormGroup>
-						<ControlLabel>{'Username'}</ControlLabel>
-						<FormControl
-							type="text"
-							placeholder="Enter username"
-							value={this.state.username}
-							name='username'
-							onChange={this.handleInputChange}/>
-					</FormGroup>
 					<FormGroup onChange={this.handleInputChange}>
-						<ControlLabel>TownHall Level</ControlLabel>
-						<img src={`${thImage}/Town_Hall${level}.png`} alt=""/>
+						<ControlLabel>TownHall Level: {level}</ControlLabel>
 						<div>
-							<FormControl name="thlevel"
-								onChange={this.handleInputChange}
-								value={this.state.thlevel}
-								componentClass="select"
-								placeholder="Nivel">
-								{thLevels}
-							</FormControl>
+							<img src={`${thImage}/Town_Hall${level}.png`} alt=""/>
 						</div>
 					</FormGroup>
-					<Button type="submit" bsStyle="primary">Update Data</Button>
+					<FormGroup>
+						<ControlLabel>{'Tag'}</ControlLabel>
+						<FormControl
+							type="text"
+							placeholder="#h1h2h3h4"
+							value={this.state.tag}
+							name='tag'
+							onChange={this.handleInputChange}/>
+					</FormGroup>
+					<Button type="submit" bsStyle="primary">GET Data</Button>
 				</form>
 			</div>
 		);
 	}
 	handleSubmit(event){
 		event.preventDefault();
-		localStorage.setItem('username',this.state.username);
-		localStorage.setItem('thlevel',this.state.thlevel);
-		alert(`${this.state.username} townhall level is ${this.state.thlevel}`)
+		console.log(this.state.tag)
+		clash.get(`player/${this.state.tag}`)
+			.then(response => response.json())
+			.then(json=>this.setState({
+				player_data:json
+			}))
+			.catch(err=>this.setState({
+				player_data:{
+					error:err
+				}
+			}));
 	}
 	handleInputChange(event){
-		console.log(event.target.value);
-		console.log(event.target.name);
 		this.setState({
 			[event.target.name]:event.target.value
 		});
