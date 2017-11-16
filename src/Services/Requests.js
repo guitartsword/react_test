@@ -95,10 +95,10 @@ export default class requests{
             }
         } catch (error) {
             return new Promise((success, reject) => {
-                reject('Invalid Payload')
+                reject('Invalid Payload');
             });
         }
 
-        return fetch(this.baseUrl + encodeURIComponent(url), options)
+        return fetch(this.baseUrl + url, options);
     }
 }

@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import React from 'react';
+import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Button} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {Link} from 'react-router-dom';
 
-const header = (
-	<Navbar>
+const CoCHeader = ()=>{
+	return(
+	<Navbar className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
 		<Navbar.Header>
 			<Navbar.Brand>
-				<Link to="/">LOGO HERE</Link>
+				<Link to="/">Clash Manager</Link>
 			</Navbar.Brand>
+			<Button>Menu</Button>
 		</Navbar.Header>
 		<Nav>
 			<LinkContainer to="/buildings">
@@ -27,13 +29,8 @@ const header = (
 			</NavDropdown>
 		</Nav>
 	</Navbar>
-);
-
-class CoCHeader extends Component{
-	render() {
-		return header;
-	}
-}
+	)
+};
 
 export default CoCHeader;
 
