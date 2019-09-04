@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import iise from './Services/App'
-import requests from './Services/Requests'
+import requests from '../Services/Requests'
 const iiseService = new iise();
 
 class App extends Component {

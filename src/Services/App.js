@@ -2,7 +2,7 @@ import 'whatwg-fetch'
 import requestClass from './Requests.js'
 const BASE_URL = 'https://iise-inscripciones-backend.herokuapp.com';
 const iiseFetch = new requestClass(BASE_URL);
-const clashFetch = new requestClass('174.138.63.193');
+const clashFetch = new requestClass('138.68.228.152');
 const secretClashKey='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjA3YWNmYzI3LTg2ZjktNDIyNC1iZTBiLTcwZWZmNzVjZjhlNCIsImlhdCI6MTQ5NzIyMjk4Mywic3ViIjoiZGV2ZWxvcGVyL2U0NDIwZTlmLTExMGYtNWNlNS04MGJkLWJlZDBhMWVmYjZjZSIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE4MS4yMTAuNDEuMTk1Il0sInR5cGUiOiJjbGllbnQifV19.2B7fhNxww3BxFIfKVUJu_3LLUhyBQnYY2afK3ihFUrj8AUobJLt_frt8DLB4Y-u8YNDD9aNeL7YmpCORjgt-WQ';
 export default class CoCAPI{
 	searchClan(searchOptions={}){
